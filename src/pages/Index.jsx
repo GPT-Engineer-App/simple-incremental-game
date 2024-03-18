@@ -42,12 +42,13 @@ function Index() {
     <div>
       <p>Your passive income: {passiveIncome}</p>
       <button onClick={handleClick}>Click Me (+{clickValue})</button>
-      <button onClick={() => handlePurchaseUpgrade({ cost: 100, income: 1 })}>Purchase Upgrade (Cost: 100)</button>
       <p>Points: {count}</p>
       <p>Click Value: {clickValue}</p>
       <p>Purchased Upgrades: {purchasedUpgrades.length}</p>
     </div>
   );
 }
+
+// Removed exports that are no longer needed
 
 export default Index;
