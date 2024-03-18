@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
-function Index({ count, setCount, passiveIncome, clickValue }) {
+function Index({ count, setCount, passiveIncome, clickValue, saveGame }) {
   const handleClick = () => {
     setCount((prevCount) => prevCount + clickValue);
   };
@@ -14,7 +14,7 @@ function Index({ count, setCount, passiveIncome, clickValue }) {
     return () => {
       clearInterval(interval);
     };
-  }, [passiveIncome]);
+  }, [passiveIncome, saveGame]);
 
   return (
     <Flex direction="column" align="center" justify="center" minHeight="100vh">
