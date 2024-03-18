@@ -6,7 +6,8 @@ const Upgrade = ({ upgrade, onPurchase }) => {
       <Text fontSize="xl">{upgrade.name}</Text>
       <Text>Cost: {upgrade.cost}</Text>
       <Text>Income: {upgrade.income} per second</Text>
-      <Button mt={2} colorScheme="green" onClick={() => onPurchase(upgrade)}>
+      <Text>Purchased: {upgrade.purchaseCount} times</Text>
+      <Button mt={2} colorScheme="green" onClick={() => onPurchase(upgrade.id)}>
         Purchase
       </Button>
     </Box>

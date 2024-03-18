@@ -6,27 +6,35 @@ import { useToast } from "@chakra-ui/react";
 const UpgradesPage = ({ count, setCount, passiveIncome, setPassiveIncome, clickValue, setClickValue, purchasedUpgrades, setPurchasedUpgrades }) => {
   const toast = useToast();
 
-  const handlePurchaseUpgrade = (upgrade) => {
-    if (count >= upgrade.cost) {
-      setCount((prevCount) => prevCount - upgrade.cost);
-      setPurchasedUpgrades((prevPurchasedUpgrades) => [...prevPurchasedUpgrades, upgrade]);
-      setPassiveIncome((prevPassiveIncome) => prevPassiveIncome + (upgrade.income || 0));
-      setClickValue((prevClickValue) => prevClickValue + (upgrade.clickValue || 0));
-    } else {
-      toast({
-        title: "Insufficient funds",
-        description: "You don't have enough points to purchase this upgrade",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+  const handlePurchaseUpgrade = (upgradeId) => {
+    setUpgradesList((prevUpgradesList) =>
+      prevUpgradesList.map((upgrade) => {
+        if (upgrade.id === upgradeId && count >= upgrade.cost) {
+          setCount((prevCount) => prevCount - upgrade.cost);
+          setPassiveIncome((prevPassiveIncome) => prevPassiveIncome + (upgrade.income || 0));
+          setClickValue((prevClickValue) => prevClickValue + (upgrade.clickValue || 0));
+          const newCost = Math.round(upgrade.cost * upgrade.costMultiplier);
+          setPurchasedUpgrades((prevPurchased) => [...prevPurchased, upgradeId]);
+          return { ...upgrade, cost: newCost, purchaseCount: upgrade.purchaseCount + 1 };
+        }
+        if (upgrade.id === upgradeId && count < upgrade.cost) {
+          toast({
+            title: "Insufficient funds",
+            description: "You don't have enough points to purchase this upgrade",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+        return upgrade;
+      }),
+    );
   };
 
-  const upgradesList = [
-    { id: 1, name: "Basic Upgrade", cost: 10, income: 1 },
-    { id: 2, name: "Click Upgrade", cost: 50, clickValue: 1 },
-  ];
+  const [upgradesList, setUpgradesList] = useState([
+    { id: 1, name: "Basic Upgrade", cost: 10, income: 1, purchaseCount: 0, costMultiplier: 1.1 },
+    { id: 2, name: "Click Upgrade", cost: 50, clickValue: 1, purchaseCount: 0, costMultiplier: 1.2 },
+  ]);
 
   return (
     <Box p={5}>
