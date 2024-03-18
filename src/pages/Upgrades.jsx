@@ -2,12 +2,16 @@ import { Box, VStack, useToast } from "@chakra-ui/react";
 import Upgrade from "../components/Upgrade.jsx";
 import { useState } from "react";
 
-const upgradesList = [{ id: 1, name: "Basic Upgrade", cost: 10, income: 1 }];
+const upgradesList = [
+  { id: 1, name: "Basic Upgrade", cost: 10, income: 1 },
+  { id: 2, name: "Click Upgrade", cost: 50, clickValue: 1 },
+];
 
 const UpgradesPage = () => {
   const toast = useToast();
   const [purchasedUpgrades, setPurchasedUpgrades] = useState([]);
   const [passiveIncome, setPassiveIncome] = useState(0);
+  const [clickValue, setClickValue] = useState(1);
 
   const handlePurchase = (upgrade) => {
     toast({
@@ -18,7 +22,8 @@ const UpgradesPage = () => {
       isClosable: true,
     });
     setPurchasedUpgrades([...purchasedUpgrades, upgrade]);
-    setPassiveIncome(passiveIncome + upgrade.income);
+    setPassiveIncome(passiveIncome + (upgrade.income || 0));
+    setClickValue(clickValue + (upgrade.clickValue || 0));
   };
 
   return (
