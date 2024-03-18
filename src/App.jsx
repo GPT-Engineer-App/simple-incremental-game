@@ -3,13 +3,32 @@ import Index from "./pages/Index.jsx";
 import Navigation from "./components/Navigation.jsx";
 import UpgradesPage from "./pages/Upgrades.jsx";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [count, setCount] = useState(0);
   const [passiveIncome, setPassiveIncome] = useState(0);
   const [clickValue, setClickValue] = useState(1);
   const [purchasedUpgrades, setPurchasedUpgrades] = useState([]);
+
+  useEffect(() => {
+    const savedState = loadGameState();
+    if (savedState) {
+      setCount(savedState.count);
+      setPassiveIncome(savedState.passiveIncome);
+      setClickValue(savedState.clickValue);
+      setPurchasedUpgrades(savedState.purchasedUpgrades);
+    }
+  }, []);
+
+  // Autosave game state every second to handle cases where there are no changes in the dependencies
+  useEffect(() => {
+    const autosaveInterval = setInterval(() => {
+      saveGameState(count, passiveIncome, clickValue, purchasedUpgrades);
+    }, 1000);
+
+    return () => clearInterval(autosaveInterval);
+  }, [count, passiveIncome, clickValue, purchasedUpgrades]);
 
   return (
     <Router>
@@ -21,5 +40,14 @@ function App() {
     </Router>
   );
 }
+
+const saveGameState = (count, passiveIncome, clickValue, purchasedUpgrades) => {
+  localStorage.setItem("gameState", JSON.stringify({ count, passiveIncome, clickValue, purchasedUpgrades }));
+};
+
+const loadGameState = () => {
+  const savedState = localStorage.getItem("gameState");
+  return savedState ? JSON.parse(savedState) : null;
+};
 
 export default App;
