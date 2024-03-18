@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
-function Index() {
-  const [count, setCount] = useState(0);
-  const [passiveIncome, setPassiveIncome] = useState(0);
-  const [clickValue, setClickValue] = useState(1);
-  const [purchasedUpgrades, setPurchasedUpgrades] = useState([]);
-
+function Index({ count, setCount, passiveIncome, setPassiveIncome, clickValue, purchasedUpgrades, setPurchasedUpgrades }) {
   const handleClick = () => {
     setCount((prevCount) => prevCount + clickValue);
   };

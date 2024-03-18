@@ -3,12 +3,7 @@ import Upgrade from "../components/Upgrade.jsx";
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
-const UpgradesPage = () => {
-  const [count, setCount] = useState(0);
-  const [passiveIncome, setPassiveIncome] = useState(0);
-  const [clickValue, setClickValue] = useState(1);
-  const [purchasedUpgrades, setPurchasedUpgrades] = useState([]);
-
+const UpgradesPage = ({ count, setCount, passiveIncome, setPassiveIncome, clickValue, setClickValue, purchasedUpgrades, setPurchasedUpgrades }) => {
   const toast = useToast();
 
   const handlePurchaseUpgrade = (upgrade) => {
